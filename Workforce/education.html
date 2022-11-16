@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Education Page</title>
-  </head>
-  <body>
+<style>
+    /* Sections with 1 item in a line*/
+    .singleline {
+      text-align: center;
+    }
     
-  </body>
-</html>
+    /* Sections with 2 items in a line*/
+    .column2 {
+      float: left;
+      width: 50%;
+      display: grid;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    /* Sections with 3 items in a line*/
+    .column3 {
+      float: left;
+      width: 33.33%;
+      display: grid;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    /* Sections with 4 items in a line*/
+    .column4 {
+      float: left;
+      width: 25%;
+      display: grid;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    </style>
+
+    <br>
+    <h2>Education Page</h2>
+
+    <!School Enrollment/>
+    <div class="row">
+        <div class="column2">
+            Currently enrolled in School? <br>
+            [field id="SchoolEnrollment"]
+        </div>
+        <div class="column2">
+            If yes, are you Full-time? <br>
+            [field id="FullTime"]
+        </div>
+    </div>
+
+    
