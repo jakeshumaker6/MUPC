@@ -5,14 +5,52 @@
     <title>JavaScript Testing</title>
   </head>
   <body>
+    <!-- FILE PICKER -->
+    <input type="file" accept=".csv" id="picker">
+
+    <!-- DISPLAY CSV HERE -->
+    <table id="table"></table>
+    <br/>
     <p id='demo'></p>
 
     <script type="text/javascript">
+    const date = new Date();
+    document.getElementById('demo').innerHTML = date.toLocaleDateString();
 
-      const date = new Date();
-      document.getElementById('demo').innerHTML = date.toLocaleDateString();
+    window.onload = () => {
+        // FILE READER + HTML ELEMENTS
+        var reader = new FileReader(),
+            picker = document.getElementById("picker"),
+            table = document.getElementById("table");
+        
+        // READ CSV ON FILE PICK
+        picker.onchange = () => reader.readAsText(picker.files[0]);
 
-      //var data = $.csv.toObjects(csv):
+        // READ THE CSV FILE & GENERATE HTML
+        reader.onloadend = () => {
+            // ENTIRE CSV FILE
+            let csv = reader.result;
+            
+            // CLEAR TABLE
+            table.innerHTML = "";
+
+            // SPLIT INTO ROWS
+            let rows = csv.split("\r\n");
+            
+            // LOOP THROUGH ROWS + SPLIT COLUMNS
+            for (let row of rows) {
+                let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+                if (cols != null){
+                    for (let col of cols) {
+                        console.log(col);
+                    }
+                }
+            }
+        };
+
+
+    };
+
     </script>
   </body>
 </html>
