@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>JavaScript Testing</title>
+    <title>Daily Hadith</title>
   </head>
   <body>
     <!-- FILE PICKER -->
@@ -24,6 +24,9 @@
 
         // READ THE CSV FILE & GENERATE HTML
         reader.onloadend = () => {
+            // HIDE FILE PICKER
+            picker.style.display = 'none';
+
             // ENTIRE CSV FILE
             let csv = reader.result;
 
