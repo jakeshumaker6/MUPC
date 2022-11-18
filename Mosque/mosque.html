@@ -8,20 +8,16 @@
     <!-- FILE PICKER -->
     <input type="file" accept=".csv" id="picker">
 
-    <!-- DISPLAY CSV HERE -->
-    <table id="table"></table>
-    <br/>
-    <p id='demo'></p>
+    <!-- DISPLAY VERSE HERE -->
+    <p id="verse"></p>
 
     <script type="text/javascript">
     const date = new Date();
-    document.getElementById('demo').innerHTML = date.toLocaleDateString();
 
     window.onload = () => {
         // FILE READER + HTML ELEMENTS
         var reader = new FileReader(),
-            picker = document.getElementById("picker"),
-            table = document.getElementById("table");
+            picker = document.getElementById("picker");
         
         // READ CSV ON FILE PICK
         picker.onchange = () => reader.readAsText(picker.files[0]);
@@ -30,9 +26,6 @@
         reader.onloadend = () => {
             // ENTIRE CSV FILE
             let csv = reader.result;
-            
-            // CLEAR TABLE
-            table.innerHTML = "";
 
             // SPLIT INTO ROWS
             let rows = csv.split("\r\n");
@@ -41,11 +34,12 @@
             for (let row of rows) {
                 let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
                 if (cols != null){
-                    for (let col of cols) {
-                        console.log(col);
-                    }
-                }
-            }
+                    if (date.toLocaleDateString() == cols[0]){
+                        const data = cols.slice(1,cols.length);
+                        document.getElementById('verse').innerHTML = data;
+                    };
+                };
+            };
         };
 
 
