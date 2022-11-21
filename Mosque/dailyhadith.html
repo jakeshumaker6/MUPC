@@ -1,53 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Daily Hadith</title>
-  </head>
-  <body>
-    <!-- FILE PICKER -->
-    <input type="file" accept=".csv" id="picker">
-
-    <!-- DISPLAY VERSE HERE -->
-    <p id="verse"></p>
-
-    <script type="text/javascript">
-    const date = new Date();
-
-    window.onload = () => {
-        // FILE READER + HTML ELEMENTS
-        var reader = new FileReader(),
-            picker = document.getElementById("picker");
-        
-        // READ CSV ON FILE PICK
-        picker.onchange = () => reader.readAsText(picker.files[0]);
-
-        // READ THE CSV FILE & GENERATE HTML
-        reader.onloadend = () => {
-            // HIDE FILE PICKER
-            picker.style.display = 'none';
-
-            // ENTIRE CSV FILE
-            let csv = reader.result;
-
-            // SPLIT INTO ROWS
-            let rows = csv.split("\r\n");
-            
-            // LOOP THROUGH ROWS + SPLIT COLUMNS
-            for (let row of rows) {
-                let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
-                if (cols != null){
-                    if (date.toLocaleDateString() == cols[0]){
-                        const data = cols.slice(1,cols.length);
-                        document.getElementById('verse').innerHTML = data;
-                    };
-                };
-            };
-        };
-
-
-    };
-
-    </script>
-  </body>
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <title>Daily Hadith</title>
+    </head>
+    <body>
+        <div id="content"></div>
+    </body>
 </html>
+
+<script type="text/javascript">
+    const date = new Date();
+    const current = date.toLocaleDateString();
+    window.onload = () => {
+        $.ajax({
+            url: "https://raw.githubusercontent.com/jakeshumaker6/MUPC/master/Mosque/Daily_Hadith.csv",
+            dataType: "text",
+            success: function(data)
+            {
+                let rows = data.split("\r\n");
+                for (let row of rows) {
+                    let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+                    for (var count = 0; count < cols.length; count++){
+                        if (cols[count] != null){
+                            if ("\n" + current == cols[count]){
+                                document.getElementById('content').innerHTML = cols[count+1];
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+</script>
