@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <!--AJAX (Asynchronous JavaScript and XML) is linked for helping connect to the https url-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+        <title>Iqamah Yearly Data</title>
+
+        <!--Styling for container-->
+        <style>
+          .addPadding {
+            padding-bottom: 15px;
+            text-align: center;
+          }
+
+          .prayerBox {
+            display: inline-block;
+            padding-right: 20px;
+          }
+
+          .prayerContainer {
+            margin: auto;
+            width: 50%;
+          }
+        </style>
+
+    </head>
+
+    <!--Body tag contains elements displayed when window loads-->
+    <body>
+      <div class="prayerContainer">
+        <div class="prayerBox">
+          <h3 class="addPadding">Iqamah Fajr</h3>
+          <div class="addPadding" id="Iqamah_Fajr"></div>
+        </div>
+        <div class="prayerBox">
+          <h3 class="addPadding">Iqamah Zuhr</h3>
+          <div class="addPadding" id="Iqamah_Zuhr"></div>
+        </div>
+        <div class="prayerBox">
+          <h3 class="addPadding">Iqamah Asr</h3>
+          <div class="addPadding" id="Iqamah_Asr"></div>
+        </div>
+        <div class="prayerBox">
+          <h3 class="addPadding">Iqamah Maghrib</h3>
+          <div class="addPadding" id="Iqamah_Maghrib"></div>
+        </div>
+        <div class="prayerBox">
+          <h3 class="addPadding">Iqamah Isha</h3>
+          <div class="addPadding" id="Iqamah_Isha"></div>
+        </div>
+        <div class="prayerBox">
+          <h3 class="addPadding">Jumuah</h3>
+          <div class="addPadding" id="Jumuah"></div>
+        </div>
+      </div>
+    </body>
+</html>
+
+<!--JavaScript code for parsing through .csv file-->
+<script type="text/javascript">
+
+    //Date function, current is the date in string form. Displayed as MM/DD/YYYY
+    const date = new Date();
+    const current = date.toLocaleDateString();
+
+    //window onload function, the function runs when the window initially loads
+    window.onload = () => {
+
+        //ajax command, url captures the .csv file as an https link, datatype describes what type the data being captured is, and
+        //success allows the function to run with the captured .csv file as a parameter called data
+        $.ajax({
+            url: "https://raw.githubusercontent.com/jakeshumaker6/MUPC/master/Mosque/Iqamah_Yearly_Data.csv",
+            dataType: "text",
+            success: function(data)
+            {
+
+              //the data is split by each row in the .csv file
+              let rows = data.split("\r\n");
+
+              //the for loop iterates through each row
+              for (let row of rows) {
+
+                //cols is using a parsing command for iterating through each row
+                let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+
+                //the for loop iterates through the length of the columns(7 in this example, 1 for the date and 6 for each prayer
+                //time) and increments by 1
+                for (var count = 0; count < cols.length; count++){
+
+                  //ensures the column isn't blank
+                  if (cols[count] != null){
+
+                    //checks if the date exists in the column
+                    if (cols[count].includes(current)){
+
+                      //if the date exists within the column, get the prayer times for that date
+                      document.getElementById('Iqamah_Fajr').innerHTML = cols[count+1];
+                      document.getElementById('Iqamah_Zuhr').innerHTML = cols[count+2];
+                      document.getElementById('Iqamah_Asr').innerHTML = cols[count+3];
+                      document.getElementById('Iqamah_Maghrib').innerHTML = cols[count+4];
+                      document.getElementById('Iqamah_Isha').innerHTML = cols[count+5];
+                      document.getElementById('Jumuah').innerHTML = cols[count+6].split("\n")[0];
+                    }
+                  }
+                }
+              }
+            }
+        })
+    }
+</script>
