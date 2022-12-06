@@ -23,6 +23,10 @@
             margin: auto;
             width: 50%;
           }
+
+          #error {
+            display: none;
+          }
         </style>
 
     </head>
@@ -55,13 +59,16 @@
           <div class="content" id="Jumuah"></div>
         </div>
       </div>
+
+      <!--Error div only appears if current date was not found in .csv file-->
+      <div class="prayerContainer" id="error">Date doesn't exist! Check the International Iqamah times.</div>
     </body>
 </html>
 
 <!--JavaScript code for parsing through .csv file-->
 <script type="text/javascript">
 
-    //Date function, current is the date in string form. Displayed as MM/DD/YYYY
+    //date function, current is the date in string form(displayed as MM/DD/2022)
     const date = new Date();
     const current = date.toLocaleDateString();
 
@@ -104,8 +111,27 @@
                       document.getElementById('Iqamah_Isha').innerHTML = cols[count+5];
                       document.getElementById('Jumuah').innerHTML = cols[count+6].split("\n")[0];
                     }
+                    //if the column doesn't include the current date, passes to next column
                   }
                 }
+                //checks if one of the prayer times is empty, if the time is empty, then date wasn't found
+                var isEmpty = document.getElementById('Iqamah_Fajr') === '';
+
+                //gets the error message div
+                var error = document.getElementById('error').innerHTML;
+
+                //checks if the prayer time is empty
+                if (isEmpty){
+
+                    //changes display based on if prayer time was empty
+                    if(error.style.display == '' || error.style.display == 'none'){
+                        error.style.display == 'block';
+                    }
+                    else {
+                        error.style.display == 'none';
+                    }
+                }
+                //if not empty, then date was found successfully
               }
             }
         })
