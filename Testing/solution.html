@@ -71,6 +71,7 @@
         //ajax command, url captures the .csv file as an https link, datatype describes what type the data being captured is, and
         //success allows the function to run with the captured .csv file as a parameter called data
         $.ajax({
+            //have to call .csv file from https link, can't call from relative path for file due to privacy issues
             url: "https://raw.githubusercontent.com/jakeshumaker6/MUPC/master/Mosque/Iqamah_Yearly_Data.csv",
             dataType: "text",
             success: function(data)
