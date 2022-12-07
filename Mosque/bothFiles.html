@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <title>Daily Hadith</title>
+    </head>
+    <body>
+        <div id="verse"></div>
+        <div id="content1"></div>
+        <div id="content2"></div>
+        <div id="content3"></div>
+        <div id="content4"></div>
+        <div id="content5"></div>
+        <div id="content6"></div>
+    </body>
+    <script type="text/javascript">
+    const date = new Date();
+    const current = date.toLocaleDateString();
+    window.onload = () => {
+        $.ajax({
+            url: "https://raw.githubusercontent.com/jakeshumaker6/MUPC/master/Mosque/Daily_Hadith.csv",
+            dataType: "text",
+            success: function(data)
+            {
+                let rows = data.split("\r\n");
+                for (let row of rows) {
+                    let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+                    for (var count = 0; count < cols.length; count++){
+                        if (cols[count] != null){
+                            if ("\n" + current == cols[count]){
+                                document.getElementById('verse').innerHTML = cols[count+1];
+                            }
+                        }
+                    }
+                }   
+            }
+        })
+        $.ajax({
+            url: "https://raw.githubusercontent.com/jakeshumaker6/MUPC/master/Mosque/Iqamah_Yearly_Data.csv",
+            dataType: "text",
+            success: function(data)
+            {
+                let rows = data.split("\r\n");
+                for (let row of rows) {
+                    let cols = row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+                    for (var count = 0; count < cols.length; count++){
+                        if (cols[count] != null){
+                            if (cols[count].includes(current)){
+                                document.getElementById('content1').innerHTML = cols[count+1];
+                                document.getElementById('content2').innerHTML = cols[count+2];
+                                document.getElementById('content3').innerHTML = cols[count+3];
+                                document.getElementById('content4').innerHTML = cols[count+4];
+                                document.getElementById('content5').innerHTML = cols[count+5];
+                                document.getElementById('content6').innerHTML = cols[count+6].split("\n")[0];
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+    </script>
+</html>
